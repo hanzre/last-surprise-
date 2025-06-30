@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 90px;
+            margin: 0 auto;
+            transition: transform 0.3s;
+        }
+        
+        .heart:hover {
+            transform: scale(1.2);
+        }
+        
+        .heart:before,
+        .heart:after {
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background: #ff6b6b;
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+        
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 1rem 1rem 3rem 1rem;
+            box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+            transform: rotate(-2deg);
+            transition: all 0.3s;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.3);
+        }
+        
+        .memory {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+        
+        .memory.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            transition: all 0.3s;
+        }
+        
+        .reveal-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,107,107,0.3);
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart-particle {
+            position: absolute;
+            opacity: 0;
+            font-size: 24px;
+            color: #ff6b6b;
+            animation: float 8s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .photo-collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .photo-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover .photo-caption {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="floatingHearts" class="floating-hearts"></div>
+    
+    <div class="min-h-screen flex flex-col items-center">
+        <!-- Hero Section -->
+        <section class="w-full py-20 bg-gradient-to-b from-pink-50 to-white text-center px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="heart mb-6"></div>
+                <h1 class="title-font text-5xl md:text-6xl lg:text-7xl text-pink-600 mb-6">For The BIRTHDAY GIRL</h1>
+                <p class="text-xl md:text-2xl text-gray-700 mb-10">This is just a small way to show you how much you mean to me...</p>
+                
+                <button id="revealBtn" class="reveal-button text-white text-xl px-8 py-4 rounded-full font-semibold shadow-lg">
+                    Click to Reveal Surprise
+                </button>
+            </div>
+        </section>
+        
+        <!-- Memories Section (hidden initially) -->
+        <section id="memoriesSection" class="w-full py-16 bg-white hidden">
+            <div class="max-w-6xl mx-auto px-4">
+                <h2 class="title-font text-4xl md:text-5xl text-center text-pink-600 mb-16">appreciation message </h2>
+                
+                <div class="photo-collage mb-20">
+                    <div class="photo-item">
+                        <img src="https://i.imgur.com/8Rq4Vqx.jpeg" alt="Couple holding hands at sunset on a beach with golden light reflecting on the water" class="w-full h-64 object-cover" />
+                        <div class="photo-caption">You have this smile and vibe that’s honestly hard to forget.</div>
+                    </div>
+                    <div class="photo-item">
+                        <img src="https://i.imgur.com/iZGUsnQ.jpeg" alt="Couple laughing while sharing an ice cream cone in a park with autumn leaves" class="w-full h-64 object-cover" />
+                        <div class="photo-caption">I feel lucky just knowing you.</div>
+                    </div>
+                    <div class="photo-item">
+                        <img src="https://i.imgur.com/hmIZv1P.jpeg" alt="Couple cuddling on a couch watching movie with cozy blanket" class="w-full h-64 object-cover" />
+                        <div class="photo-caption">I hope today makes you feel as special as you truly are.</div>
+                    </div>
+                    <div class="photo-item">
+                        <img src="https://i.imgur.com/xMqZu2R.jpeg" alt="Romantic dinner at a candlelit restaurant with wine glasses" class="w-full h-64 object-cover" />
+                        <div class="photo-caption">And hey, save a little time for me to celebrate with you soon </div>
+                    </div>
+                    <div class="photo-item">
+                        <img src="https://i.imgur.com/e1qJoyp.jpeg" alt="Couple wearing matching pajamas decorating Christmas tree with ornaments" class="w-full h-64 object-cover" />
+                        <div class="photo-caption">I miss you… and yes, I love you.</div>
+                    </div>
+                </div>
+                
+                <div class="max-w-3xl mx-auto">
+                    <div class="memory mb-12">
+                        <div class="polaroid inline-block">
+                            <img src="https://i.imgur.com/aTcdn21.jpeg" alt="First date at a coffee shop with latte art heart" class="w-full rounded-sm" />
+                            <div class="title-font text-xl text-gray-800 mt-2">i love you</div>
+                        </div>
+                        <div class="mt-6 text-lg text-gray-700">
+                            <p> "I was a little nervous about what to say today, but the truth is… just thinking about your birthday makes me smile because it's the day someone amazing came into this world." </p>
+
+
+                            </div>
+                    </div>
+                    
+                    <div class="memory mb-12">
+                        <div class="text-lg text-gray-700 mb-6">
+                          <p>"Looking back at all our memories, I realized your birthday isn’t just a special day it’s the reason I get to have someone like you in my life."
+
+</p>   
+       </div>
+                        <div class="polaroid inline-block float-right ml-6">
+                            <img src="https://i.imgur.com/DmkGJfe.jpegq" alt="Couple hiking mountain trail with panoramic view" class="w-full rounded-sm" />
+                            <div class="title-font text-xl text-gray-800 mt-2"> I MISS YOU</div>
+                        </div>
+                    </div>
+                    
+                    <div class="memory mb-12">
+                        <div class="polaroid inline-block">
+                            <img src="https://i.imgur.com/fQ7GKaW.png" alt="Surprise birthday party with decorations and cake" class="w-full rounded-sm" />
+                            <div class="title-font text-xl text-gray-800 mt-2">Your birthday</div>
+                        </div>
+                        <div class="mt-6 text-lg text-gray-700">
+     </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Love Letter Section -->
+        <section id="loveLetter" class="w-full py-20 bg-pink-50 hidden">
+            <div class="max-w-3xl mx-auto px-4">
+                <div class="bg-white p-8 md:p-12 rounded-lg shadow-lg">
+                    <h2 class="title-font text-4xl text-pink-600 mb-8 text-center">To The Love of My Life</h2>
+                    
+                    <div class="text-lg text-gray-700 space-y-4">
+                <p>Dear ZANDRA,</p>
+
+<p>Happy, happy birthday, baby 🥰🎉 Today’s your special day, and I just want you to stay as happy as you always make me feel.</p>
+
+<p>If ever you're not feeling well or things don’t go as planned, that’s okay we can always celebrate together when we finally see each other. Promise ko yan 💖</p>
+
+<p>Please take care of your health and keep staying strong no matter what life throws your way. I know you’ve got this you’re one of the strongest and most beautiful souls I know.</p>
+
+<p>Keep holding on to your faith, and whenever you’re feeling down or going through something, I hope you remember this:</p>
+
+<ul class="list-disc pl-6 space-y-2">
+    <li>I'm just one message away always.</li>
+    <li>You can talk to me about anything, anytime.</li>
+    <li>I miss you more than words can explain.</li>
+    <li>I love you deeply and sincerely, my wife 😘</li>
+</ul>
+
+<p>And before this letter ends…</p>
+
+<p class="font-semibold text-pink-600 text-lg">Will you be my girlfriend po ba? Yes or no? 😚💍💗</p>
+
+<p>Forever yours,</p>
+<p class="title-font text-2xl mt-8">HANZ(ZELHNZ)</p>
+ </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Final Surprise -->
+        <section id="finalSurprise" class="w-full py-20 hidden">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <div class="heart mb-10"></div>
+                <h2 class="title-font text-4xl md:text-5xl text-pink-600 mb-8">One Last Thing...</h2>
+                <p class="text-xl md:text-2xl text-gray-700 mb-12">Click the button below for your final surprise!</p>
+                
+                <button id="finalBtn" class="reveal-button text-white text-xl px-8 py-4 rounded-full font-semibold shadow-lg mb-16">
+                    Click Me!
+                </button>
+                
+                <div id="finalMessage" class="hidden">
+                    <div class="inline-block bg-white p-8 rounded-lg shadow-lg max-w-2xl">
+                        <h3 class="title-font text-3xl text-pink-600 mb-6">I Love You</h3>
+                        <p class="text-xl text-gray-700">More than words could ever express...</p>
+                        <div class="mt-8 text-6xl animate-bounce">❤️</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const container = document.getElementById('floatingHearts');
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (5 + Math.random() * 10) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            createHearts();
+            
+            // Reveal main sections
+            const revealBtn = document.getElementById('revealBtn');
+            const memoriesSection = document.getElementById('memoriesSection');
+            const loveLetter = document.getElementById('loveLetter');
+            const finalSurprise = document.getElementById('finalSurprise');
+            const memories = document.querySelectorAll('.memory');
+            
+            revealBtn.addEventListener('click', function() {
+                // Hide the reveal button with animation
+                revealBtn.classList.add('opacity-0', 'scale-90');
+                setTimeout(() => {
+                    revealBtn.classList.add('hidden');
+                    
+                    // Show memories section
+                    memoriesSection.classList.remove('hidden');
+                    memoriesSection.classList.add('animate-fadeIn');
+                    
+                    // Animate each memory with a delay
+                    memories.forEach((memory, index) => {
+                        setTimeout(() => {
+                            memory.classList.add('visible');
+                        }, index * 300);
+                    });
+                    
+                    // Show love letter section after memories
+                    setTimeout(() => {
+                        loveLetter.classList.remove('hidden');
+                        loveLetter.classList.add('animate-fadeIn');
+                        
+                        // Show final section after love letter
+                        setTimeout(() => {
+                            finalSurprise.classList.remove('hidden');
+                            finalSurprise.classList.add('animate-fadeIn');
+                        }, 1000);
+                    }, memories.length * 300 + 1000);
+                }, 300);
+            });
+            
+            // Final surprise button
+            const finalBtn = document.getElementById('finalBtn');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            finalBtn.addEventListener('click', function() {
+                finalBtn.classList.add('opacity-0', 'scale-90');
+                setTimeout(() => {
+                    finalBtn.classList.add('hidden');
+                    finalMessage.classList.remove('hidden');
+                    
+                    // Create heart explosion effect
+                    for (let i = 0; i < 50; i++) {
+                        setTimeout(() => {
+                            const heart = document.createElement('div');
+                            heart.className = 'heart-particle absolute';
+                            heart.innerHTML = '❤';
+                            heart.style.left = '50%';
+                            heart.style.top = '50%';
+                            heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+                            heart.style.animation = 'float 3s linear forwards';
+                            heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+                            document.body.appendChild(heart);
+                            
+                            setTimeout(() => {
+                                heart.remove();
+                            }, 3000);
+                        }, i * 100);
+                    }
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
